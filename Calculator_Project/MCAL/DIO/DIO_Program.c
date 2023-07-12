@@ -6,14 +6,16 @@
 #include "DIO_Config.h"
 
 
+
 /*****************************************************************************/
 /*****************************************************************************/
-/** Function Name   : DIO_enuSetPortDirection.                              **/
-/** Return Type     : Error_State enum.                                     **/
-/** Arguments       : Port & Value.                                         **/
-/** Functionality   : Setting Port Value                                    **/
+/** Function Name   : DIO_enuSetPortValue.                                  **/
+/** Return Type     : Error_State.                                          **/
+/** Arguments       : copy_u8Port , copy_u8Value.                           **/
+/** Functionality   : set value of port                                     **/
 /*****************************************************************************/
 /*****************************************************************************/
+
 ES_t DIO_enuSetPortValue(u8 copy_u8Port , u8 copy_u8Value)
 {
 	ES_t Local_u8ErrorState = ES_NOK;
@@ -35,14 +37,16 @@ ES_t DIO_enuSetPortValue(u8 copy_u8Port , u8 copy_u8Value)
 	return Local_u8ErrorState;
 
 }
+
 /*****************************************************************************/
 /*****************************************************************************/
-/** Function Name   : DIO_enuTogPortValue.                              **/
-/** Return Type     : Error_State enum.                                     **/
-/** Arguments       : Port & Value.                                         **/
-/** Functionality   : Toggling Port Value                                   **/
+/** Function Name   : DIO_enuTogPortValue.                                  **/
+/** Return Type     : Error_State.                                          **/
+/** Arguments       : copy_u8Port                                           **/
+/** Functionality   : Toggle value of port                                  **/
 /*****************************************************************************/
 /*****************************************************************************/
+
 ES_t DIO_enuTogPortValue(u8 copy_u8Port)
 {
 
@@ -65,17 +69,19 @@ ES_t DIO_enuTogPortValue(u8 copy_u8Port)
 	return Local_u8ErrorState;
 
 }
+
 /*****************************************************************************/
 /*****************************************************************************/
-/** Function Name   : DIO_enuGetPortValue.                              **/
-/** Return Type     : Error_State enum.                                     **/
-/** Arguments       : Port & Value.                                         **/
-/** Functionality   : Getting Port Value                                    **/
+/** Function Name   : DIO_enuGetPortValue.                                  **/
+/** Return Type     : Error_State.                                          **/
+/** Arguments       : copy_u8Port , copy_pu8Value                           **/
+/** Functionality   : Get value of port                                     **/
 /*****************************************************************************/
 /*****************************************************************************/
+
 ES_t DIO_enuGetPortValue(u8 copy_u8Port , u8* copy_pu8Value)
 {
-	ES_t Local_u8ErrorState = ES_NOK;
+	ES_t Local_u8ErrorState = ES_NOK; //0 indicates no problem
 	if(copy_pu8Value != NULL)
 	{
 		if(copy_u8Port <= DIO_u8PORTD)
@@ -100,14 +106,17 @@ ES_t DIO_enuGetPortValue(u8 copy_u8Port , u8* copy_pu8Value)
 	}
 	return Local_u8ErrorState;
 }
+                                             /*************Pin Functions***************/
+
 /*****************************************************************************/
 /*****************************************************************************/
 /** Function Name   : DIO_enuSetPinValue.                                   **/
-/** Return Type     : Error_State enum.                                     **/
-/** Arguments       : Port & Value.                                         **/
-/** Functionality   : Setting Pin Value                                     **/
+/** Return Type     : Error_State.                                          **/
+/** Arguments       : copy_u8Port , copy_u8Pin ,  copy_u8Value              **/
+/** Functionality   : set value of pin                                      **/
 /*****************************************************************************/
 /*****************************************************************************/
+
 ES_t DIO_enuSetPinValue(u8 copy_u8Port , u8 copy_u8Pin , u8 copy_u8Value)
 {
 	ES_t Local_u8ErrorState = ES_NOK; //0 indicates no problem
@@ -147,14 +156,16 @@ ES_t DIO_enuSetPinValue(u8 copy_u8Port , u8 copy_u8Pin , u8 copy_u8Value)
 
 	return Local_u8ErrorState;
 }
+
 /*****************************************************************************/
 /*****************************************************************************/
 /** Function Name   : DIO_enuTogPinValue.                                   **/
-/** Return Type     : Error_State enum.                                     **/
-/** Arguments       : Port & Value.                                         **/
-/** Functionality   : Toggling Pin Value                                    **/
+/** Return Type     : Error_State.                                          **/
+/** Arguments       : copy_u8Port , copy_u8Pin                              **/
+/** Functionality   : Toggle value of pin                                   **/
 /*****************************************************************************/
 /*****************************************************************************/
+
 ES_t DIO_enuTogPinValue(u8 copy_u8Port , u8 copy_u8Pin)
 {
 	ES_t Local_u8ErrorState = ES_NOK; //0 indicates no problem
@@ -176,14 +187,17 @@ ES_t DIO_enuTogPinValue(u8 copy_u8Port , u8 copy_u8Pin)
 
 	return Local_u8ErrorState;
 }
+
+
 /*****************************************************************************/
 /*****************************************************************************/
 /** Function Name   : DIO_enuGetPinValue.                                   **/
-/** Return Type     : Error_State enum.                                     **/
-/** Arguments       : Port & Value.                                         **/
-/** Functionality   : Getting Pin Value                                     **/
+/** Return Type     : Error_State.                                          **/
+/** Arguments       : copy_u8Port , copy_u8Pin , copy_Pu8Val                **/
+/** Functionality   : Get value of pin                                      **/
 /*****************************************************************************/
 /*****************************************************************************/
+
 ES_t DIO_enuGetPinValue(u8 copy_u8Port , u8 copy_u8Pin , u8* copy_Pu8Value)//pu8 pointer to u8
 {
 	ES_t Local_u8ErrorState = ES_NOK; //0 indicates no problem

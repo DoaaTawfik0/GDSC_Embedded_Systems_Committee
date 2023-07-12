@@ -10,7 +10,7 @@
 #ifndef DIO_CONFIG_H_
 #define DIO_COFIG_H_
 
-/*#include "DIO_Private.h"
+#include "DIO_Private.h"
 
 
 #define PA_PIN0_DIR      OUTPUT
@@ -92,7 +92,7 @@
 #define PD_PIN6_VAL      LOW
 #define PD_PIN7_VAL      LOW
 
-*/
+
 
 
 #endif

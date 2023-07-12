@@ -34,6 +34,9 @@
 #define DIO_u8PIN_HIGH          1
 #define DIO_u8PIN_LOW           0
 
+#define DIO_u8PIN_FLOAT         0
+#define DIO_u8PIN_PULL_UP       1
+
 #define DIO_u8PIN_OUTPUT       1
 #define DIO_u8PIN_INPUT        0
 
@@ -43,6 +46,9 @@
 #define DIO_u8PORT_HIGH         0xFF
 #define DIO_u8PORT_LOW          0
 
+
+//Initialization Function
+ES_t DIO_enuInitialize(void);
 
 //Set_Value_Functions
 ES_t DIO_enuSetPinValue(u8 copy_u8Port , u8 copy_u8Pin , u8 copy_u8Value);

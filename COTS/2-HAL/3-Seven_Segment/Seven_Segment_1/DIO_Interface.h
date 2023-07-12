@@ -44,6 +44,13 @@
 #define DIO_u8PORT_LOW          0
 
 
+//Initialization Function
+ES_t DIO_enuInitialize(void);
+
+//Set_Direction_Functions
+ES_t DIO_enuSetPinDirection(u8 copy_u8Port , u8 copy_u8Pin , u8 copy_u8Direction);
+ES_t DIO_enuSetPortDirection(u8 copy_u8Port , u8 copy_u8Direction);
+
 //Set_Value_Functions
 ES_t DIO_enuSetPinValue(u8 copy_u8Port , u8 copy_u8Pin , u8 copy_u8Value);
 ES_t DIO_enuSetPortValue(u8 copy_u8Port , u8 copy_u8Value);
