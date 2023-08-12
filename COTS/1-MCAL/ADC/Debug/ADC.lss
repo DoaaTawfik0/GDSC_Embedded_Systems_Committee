@@ -3,15 +3,15 @@ ADC.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         0000143c  00000000  00000000  00000094  2**1
+  0 .text         00001434  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         00000006  00800060  0000143c  000014d0  2**0
+  1 .data         00000006  00800060  00001434  000014c8  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          00000010  00800066  00800066  000014d6  2**0
+  2 .bss          00000010  00800066  00800066  000014ce  2**0
                   ALLOC
-  3 .stab         000022b0  00000000  00000000  000014d8  2**2
+  3 .stab         00002298  00000000  00000000  000014d0  2**2
                   CONTENTS, READONLY, DEBUGGING
-  4 .stabstr      00000e2a  00000000  00000000  00003788  2**0
+  4 .stabstr      00000e12  00000000  00000000  00003768  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -33,7 +33,7 @@ Disassembly of section .text:
       34:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
       38:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
       3c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
-      40:	0c 94 c1 09 	jmp	0x1382	; 0x1382 <__vector_16>
+      40:	0c 94 bd 09 	jmp	0x137a	; 0x137a <__vector_16>
       44:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
       48:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
       4c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
@@ -51,7 +51,7 @@ Disassembly of section .text:
       60:	10 e0       	ldi	r17, 0x00	; 0
       62:	a0 e6       	ldi	r26, 0x60	; 96
       64:	b0 e0       	ldi	r27, 0x00	; 0
-      66:	ec e3       	ldi	r30, 0x3C	; 60
+      66:	e4 e3       	ldi	r30, 0x34	; 52
       68:	f4 e1       	ldi	r31, 0x14	; 20
       6a:	02 c0       	rjmp	.+4      	; 0x70 <.do_copy_data_start>
 
@@ -77,8 +77,8 @@ Disassembly of section .text:
       80:	a6 37       	cpi	r26, 0x76	; 118
       82:	b1 07       	cpc	r27, r17
       84:	e1 f7       	brne	.-8      	; 0x7e <.do_clear_bss_loop>
-      86:	0e 94 f8 09 	call	0x13f0	; 0x13f0 <main>
-      8a:	0c 94 1c 0a 	jmp	0x1438	; 0x1438 <_exit>
+      86:	0e 94 f4 09 	call	0x13e8	; 0x13e8 <main>
+      8a:	0c 94 18 0a 	jmp	0x1430	; 0x1430 <_exit>
 
 0000008e <__bad_interrupt>:
       8e:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -2769,40 +2769,40 @@ ES_t  ADC_enuPollingSystem(void)
 {
     10a0:	df 93       	push	r29
     10a2:	cf 93       	push	r28
-    10a4:	00 d0       	rcall	.+0      	; 0x10a6 <ADC_enuPollingSystem+0x6>
+    10a4:	0f 92       	push	r0
     10a6:	cd b7       	in	r28, 0x3d	; 61
     10a8:	de b7       	in	r29, 0x3e	; 62
 	ES_t Local_enuErrorState = ES_NOK;
-    10aa:	1a 82       	std	Y+2, r1	; 0x02
-	u8   Local_u8FlagValue = GET_BIT(ADCSRA , ADCSRA_ADIF);
+    10aa:	19 82       	std	Y+1, r1	; 0x01
+
+
+	while(GET_BIT(ADCSRA , ADCSRA_ADIF) == 0);//wait on flag
     10ac:	e6 e2       	ldi	r30, 0x26	; 38
     10ae:	f0 e0       	ldi	r31, 0x00	; 0
     10b0:	80 81       	ld	r24, Z
     10b2:	82 95       	swap	r24
     10b4:	8f 70       	andi	r24, 0x0F	; 15
-    10b6:	81 70       	andi	r24, 0x01	; 1
-    10b8:	89 83       	std	Y+1, r24	; 0x01
-
-	while(Local_u8FlagValue == 0);//wait on flag
-    10ba:	89 81       	ldd	r24, Y+1	; 0x01
-    10bc:	88 23       	and	r24, r24
-    10be:	e9 f3       	breq	.-6      	; 0x10ba <ADC_enuPollingSystem+0x1a>
-	CLEAR_BIT(ADCSRA , ADCSRA_ADIF);//Clear Flag
-    10c0:	a6 e2       	ldi	r26, 0x26	; 38
-    10c2:	b0 e0       	ldi	r27, 0x00	; 0
-    10c4:	e6 e2       	ldi	r30, 0x26	; 38
-    10c6:	f0 e0       	ldi	r31, 0x00	; 0
-    10c8:	80 81       	ld	r24, Z
-    10ca:	8f 7e       	andi	r24, 0xEF	; 239
-    10cc:	8c 93       	st	X, r24
+    10b6:	88 2f       	mov	r24, r24
+    10b8:	90 e0       	ldi	r25, 0x00	; 0
+    10ba:	81 70       	andi	r24, 0x01	; 1
+    10bc:	90 70       	andi	r25, 0x00	; 0
+    10be:	00 97       	sbiw	r24, 0x00	; 0
+    10c0:	a9 f3       	breq	.-22     	; 0x10ac <ADC_enuPollingSystem+0xc>
+	CLEAR_BIT(ADCSRA , ADCSRA_ADIF);//Clear Flag BY Sstting bit to 1
+    10c2:	a6 e2       	ldi	r26, 0x26	; 38
+    10c4:	b0 e0       	ldi	r27, 0x00	; 0
+    10c6:	e6 e2       	ldi	r30, 0x26	; 38
+    10c8:	f0 e0       	ldi	r31, 0x00	; 0
+    10ca:	80 81       	ld	r24, Z
+    10cc:	8f 7e       	andi	r24, 0xEF	; 239
+    10ce:	8c 93       	st	X, r24
 	Local_enuErrorState = ES_OK;
-    10ce:	81 e0       	ldi	r24, 0x01	; 1
-    10d0:	8a 83       	std	Y+2, r24	; 0x02
+    10d0:	81 e0       	ldi	r24, 0x01	; 1
+    10d2:	89 83       	std	Y+1, r24	; 0x01
 
 	return   Local_enuErrorState;
-    10d2:	8a 81       	ldd	r24, Y+2	; 0x02
+    10d4:	89 81       	ldd	r24, Y+1	; 0x01
 }
-    10d4:	0f 90       	pop	r0
     10d6:	0f 90       	pop	r0
     10d8:	cf 91       	pop	r28
     10da:	df 91       	pop	r29
@@ -2829,639 +2829,636 @@ ES_t  ADC_enuReadHighValue(u8* Copy_pu8Value)
     10f0:	8a 81       	ldd	r24, Y+2	; 0x02
     10f2:	9b 81       	ldd	r25, Y+3	; 0x03
     10f4:	00 97       	sbiw	r24, 0x00	; 0
-    10f6:	29 f1       	breq	.+74     	; 0x1142 <ADC_enuReadHighValue+0x64>
+    10f6:	09 f1       	breq	.+66     	; 0x113a <ADC_enuReadHighValue+0x5c>
 		{
 			*Copy_pu8Value = ADCH;
 		}
 		else if(ADC_ADJUSTMENT == RIGHT_ADJUST)
 		{
-			*Copy_pu8Value |= (ADCL >> 2);
-    10f8:	ea 81       	ldd	r30, Y+2	; 0x02
-    10fa:	fb 81       	ldd	r31, Y+3	; 0x03
-    10fc:	90 81       	ld	r25, Z
-    10fe:	e4 e2       	ldi	r30, 0x24	; 36
-    1100:	f0 e0       	ldi	r31, 0x00	; 0
-    1102:	80 81       	ld	r24, Z
-    1104:	86 95       	lsr	r24
-    1106:	86 95       	lsr	r24
-    1108:	89 2b       	or	r24, r25
-    110a:	ea 81       	ldd	r30, Y+2	; 0x02
-    110c:	fb 81       	ldd	r31, Y+3	; 0x03
-    110e:	80 83       	st	Z, r24
+			*Copy_pu8Value = (ADCL >> 2);
+    10f8:	e4 e2       	ldi	r30, 0x24	; 36
+    10fa:	f0 e0       	ldi	r31, 0x00	; 0
+    10fc:	80 81       	ld	r24, Z
+    10fe:	86 95       	lsr	r24
+    1100:	86 95       	lsr	r24
+    1102:	ea 81       	ldd	r30, Y+2	; 0x02
+    1104:	fb 81       	ldd	r31, Y+3	; 0x03
+    1106:	80 83       	st	Z, r24
 			*Copy_pu8Value |= (ADCH << 6);
-    1110:	ea 81       	ldd	r30, Y+2	; 0x02
-    1112:	fb 81       	ldd	r31, Y+3	; 0x03
+    1108:	ea 81       	ldd	r30, Y+2	; 0x02
+    110a:	fb 81       	ldd	r31, Y+3	; 0x03
+    110c:	80 81       	ld	r24, Z
+    110e:	28 2f       	mov	r18, r24
+    1110:	e5 e2       	ldi	r30, 0x25	; 37
+    1112:	f0 e0       	ldi	r31, 0x00	; 0
     1114:	80 81       	ld	r24, Z
-    1116:	28 2f       	mov	r18, r24
-    1118:	e5 e2       	ldi	r30, 0x25	; 37
-    111a:	f0 e0       	ldi	r31, 0x00	; 0
-    111c:	80 81       	ld	r24, Z
-    111e:	88 2f       	mov	r24, r24
-    1120:	90 e0       	ldi	r25, 0x00	; 0
-    1122:	00 24       	eor	r0, r0
-    1124:	96 95       	lsr	r25
-    1126:	87 95       	ror	r24
-    1128:	07 94       	ror	r0
-    112a:	96 95       	lsr	r25
-    112c:	87 95       	ror	r24
-    112e:	07 94       	ror	r0
-    1130:	98 2f       	mov	r25, r24
-    1132:	80 2d       	mov	r24, r0
-    1134:	82 2b       	or	r24, r18
-    1136:	ea 81       	ldd	r30, Y+2	; 0x02
-    1138:	fb 81       	ldd	r31, Y+3	; 0x03
-    113a:	80 83       	st	Z, r24
+    1116:	88 2f       	mov	r24, r24
+    1118:	90 e0       	ldi	r25, 0x00	; 0
+    111a:	00 24       	eor	r0, r0
+    111c:	96 95       	lsr	r25
+    111e:	87 95       	ror	r24
+    1120:	07 94       	ror	r0
+    1122:	96 95       	lsr	r25
+    1124:	87 95       	ror	r24
+    1126:	07 94       	ror	r0
+    1128:	98 2f       	mov	r25, r24
+    112a:	80 2d       	mov	r24, r0
+    112c:	82 2b       	or	r24, r18
+    112e:	ea 81       	ldd	r30, Y+2	; 0x02
+    1130:	fb 81       	ldd	r31, Y+3	; 0x03
+    1132:	80 83       	st	Z, r24
 		}
 		Local_enuErrorState = ES_OK;
-    113c:	81 e0       	ldi	r24, 0x01	; 1
-    113e:	89 83       	std	Y+1, r24	; 0x01
-    1140:	02 c0       	rjmp	.+4      	; 0x1146 <ADC_enuReadHighValue+0x68>
+    1134:	81 e0       	ldi	r24, 0x01	; 1
+    1136:	89 83       	std	Y+1, r24	; 0x01
+    1138:	02 c0       	rjmp	.+4      	; 0x113e <ADC_enuReadHighValue+0x60>
 	}
 	else
 	{
 		Local_enuErrorState = ES_NULL_POINTER;
-    1142:	82 e0       	ldi	r24, 0x02	; 2
-    1144:	89 83       	std	Y+1, r24	; 0x01
+    113a:	82 e0       	ldi	r24, 0x02	; 2
+    113c:	89 83       	std	Y+1, r24	; 0x01
 	}
 
 	return   Local_enuErrorState;
-    1146:	89 81       	ldd	r24, Y+1	; 0x01
+    113e:	89 81       	ldd	r24, Y+1	; 0x01
 }
-    1148:	0f 90       	pop	r0
-    114a:	0f 90       	pop	r0
-    114c:	0f 90       	pop	r0
-    114e:	cf 91       	pop	r28
-    1150:	df 91       	pop	r29
-    1152:	08 95       	ret
+    1140:	0f 90       	pop	r0
+    1142:	0f 90       	pop	r0
+    1144:	0f 90       	pop	r0
+    1146:	cf 91       	pop	r28
+    1148:	df 91       	pop	r29
+    114a:	08 95       	ret
 
-00001154 <ADC_enuReadData>:
+0000114c <ADC_enuReadData>:
 /** Functionality   : Reading All Ten Bits from 0 to 9                      **/
 /*****************************************************************************/
 /*****************************************************************************/
 
 ES_t  ADC_enuReadData(u16* Copy_pu16Value)
 {
-    1154:	df 93       	push	r29
-    1156:	cf 93       	push	r28
-    1158:	00 d0       	rcall	.+0      	; 0x115a <ADC_enuReadData+0x6>
-    115a:	0f 92       	push	r0
-    115c:	cd b7       	in	r28, 0x3d	; 61
-    115e:	de b7       	in	r29, 0x3e	; 62
-    1160:	9b 83       	std	Y+3, r25	; 0x03
-    1162:	8a 83       	std	Y+2, r24	; 0x02
+    114c:	df 93       	push	r29
+    114e:	cf 93       	push	r28
+    1150:	00 d0       	rcall	.+0      	; 0x1152 <ADC_enuReadData+0x6>
+    1152:	0f 92       	push	r0
+    1154:	cd b7       	in	r28, 0x3d	; 61
+    1156:	de b7       	in	r29, 0x3e	; 62
+    1158:	9b 83       	std	Y+3, r25	; 0x03
+    115a:	8a 83       	std	Y+2, r24	; 0x02
 	ES_t Local_enuErrorState = ES_NOK;
-    1164:	19 82       	std	Y+1, r1	; 0x01
+    115c:	19 82       	std	Y+1, r1	; 0x01
 	if(Copy_pu16Value != NULL)
-    1166:	8a 81       	ldd	r24, Y+2	; 0x02
-    1168:	9b 81       	ldd	r25, Y+3	; 0x03
-    116a:	00 97       	sbiw	r24, 0x00	; 0
-    116c:	e9 f0       	breq	.+58     	; 0x11a8 <ADC_enuReadData+0x54>
-			*Copy_pu16Value |= (ADCL >> 6);
+    115e:	8a 81       	ldd	r24, Y+2	; 0x02
+    1160:	9b 81       	ldd	r25, Y+3	; 0x03
+    1162:	00 97       	sbiw	r24, 0x00	; 0
+    1164:	e9 f0       	breq	.+58     	; 0x11a0 <ADC_enuReadData+0x54>
+			*Copy_pu16Value  = (ADCL >> 6);
 			*Copy_pu16Value |= (ADCH << 2);
 		}
 		else if(ADC_ADJUSTMENT == RIGHT_ADJUST)
 		{
 			*Copy_pu16Value = ADCL;
-    116e:	e4 e2       	ldi	r30, 0x24	; 36
-    1170:	f0 e0       	ldi	r31, 0x00	; 0
-    1172:	80 81       	ld	r24, Z
-    1174:	88 2f       	mov	r24, r24
-    1176:	90 e0       	ldi	r25, 0x00	; 0
+    1166:	e4 e2       	ldi	r30, 0x24	; 36
+    1168:	f0 e0       	ldi	r31, 0x00	; 0
+    116a:	80 81       	ld	r24, Z
+    116c:	88 2f       	mov	r24, r24
+    116e:	90 e0       	ldi	r25, 0x00	; 0
+    1170:	ea 81       	ldd	r30, Y+2	; 0x02
+    1172:	fb 81       	ldd	r31, Y+3	; 0x03
+    1174:	91 83       	std	Z+1, r25	; 0x01
+    1176:	80 83       	st	Z, r24
+			*Copy_pu16Value |= ((u16)ADCH << 8);
     1178:	ea 81       	ldd	r30, Y+2	; 0x02
     117a:	fb 81       	ldd	r31, Y+3	; 0x03
-    117c:	91 83       	std	Z+1, r25	; 0x01
-    117e:	80 83       	st	Z, r24
-			*Copy_pu16Value |= ((u16)ADCH << 8);
-    1180:	ea 81       	ldd	r30, Y+2	; 0x02
-    1182:	fb 81       	ldd	r31, Y+3	; 0x03
-    1184:	20 81       	ld	r18, Z
-    1186:	31 81       	ldd	r19, Z+1	; 0x01
-    1188:	e5 e2       	ldi	r30, 0x25	; 37
-    118a:	f0 e0       	ldi	r31, 0x00	; 0
-    118c:	80 81       	ld	r24, Z
-    118e:	88 2f       	mov	r24, r24
-    1190:	90 e0       	ldi	r25, 0x00	; 0
-    1192:	98 2f       	mov	r25, r24
-    1194:	88 27       	eor	r24, r24
-    1196:	82 2b       	or	r24, r18
-    1198:	93 2b       	or	r25, r19
-    119a:	ea 81       	ldd	r30, Y+2	; 0x02
-    119c:	fb 81       	ldd	r31, Y+3	; 0x03
-    119e:	91 83       	std	Z+1, r25	; 0x01
-    11a0:	80 83       	st	Z, r24
+    117c:	20 81       	ld	r18, Z
+    117e:	31 81       	ldd	r19, Z+1	; 0x01
+    1180:	e5 e2       	ldi	r30, 0x25	; 37
+    1182:	f0 e0       	ldi	r31, 0x00	; 0
+    1184:	80 81       	ld	r24, Z
+    1186:	88 2f       	mov	r24, r24
+    1188:	90 e0       	ldi	r25, 0x00	; 0
+    118a:	98 2f       	mov	r25, r24
+    118c:	88 27       	eor	r24, r24
+    118e:	82 2b       	or	r24, r18
+    1190:	93 2b       	or	r25, r19
+    1192:	ea 81       	ldd	r30, Y+2	; 0x02
+    1194:	fb 81       	ldd	r31, Y+3	; 0x03
+    1196:	91 83       	std	Z+1, r25	; 0x01
+    1198:	80 83       	st	Z, r24
 		}
 		Local_enuErrorState = ES_OK;
-    11a2:	81 e0       	ldi	r24, 0x01	; 1
-    11a4:	89 83       	std	Y+1, r24	; 0x01
-    11a6:	02 c0       	rjmp	.+4      	; 0x11ac <ADC_enuReadData+0x58>
+    119a:	81 e0       	ldi	r24, 0x01	; 1
+    119c:	89 83       	std	Y+1, r24	; 0x01
+    119e:	02 c0       	rjmp	.+4      	; 0x11a4 <ADC_enuReadData+0x58>
 	}
 	else
 	{
 		Local_enuErrorState = ES_NULL_POINTER;
-    11a8:	82 e0       	ldi	r24, 0x02	; 2
-    11aa:	89 83       	std	Y+1, r24	; 0x01
+    11a0:	82 e0       	ldi	r24, 0x02	; 2
+    11a2:	89 83       	std	Y+1, r24	; 0x01
 	}
 
 	return   Local_enuErrorState;
-    11ac:	89 81       	ldd	r24, Y+1	; 0x01
+    11a4:	89 81       	ldd	r24, Y+1	; 0x01
 }
-    11ae:	0f 90       	pop	r0
-    11b0:	0f 90       	pop	r0
-    11b2:	0f 90       	pop	r0
-    11b4:	cf 91       	pop	r28
-    11b6:	df 91       	pop	r29
-    11b8:	08 95       	ret
+    11a6:	0f 90       	pop	r0
+    11a8:	0f 90       	pop	r0
+    11aa:	0f 90       	pop	r0
+    11ac:	cf 91       	pop	r28
+    11ae:	df 91       	pop	r29
+    11b0:	08 95       	ret
 
-000011ba <ADC_enuCallBack>:
+000011b2 <ADC_enuCallBack>:
 /** Functionality   : Call Back Fun To call App Function                    **/
 /*****************************************************************************/
 /*****************************************************************************/
 
 ES_t  ADC_enuCallBack(volatile void(*Copy_pfunAppFun)(void*) , void* Copy_pvidAppParameter)
 {
-    11ba:	df 93       	push	r29
-    11bc:	cf 93       	push	r28
-    11be:	00 d0       	rcall	.+0      	; 0x11c0 <ADC_enuCallBack+0x6>
-    11c0:	00 d0       	rcall	.+0      	; 0x11c2 <ADC_enuCallBack+0x8>
-    11c2:	0f 92       	push	r0
-    11c4:	cd b7       	in	r28, 0x3d	; 61
-    11c6:	de b7       	in	r29, 0x3e	; 62
-    11c8:	9b 83       	std	Y+3, r25	; 0x03
-    11ca:	8a 83       	std	Y+2, r24	; 0x02
-    11cc:	7d 83       	std	Y+5, r23	; 0x05
-    11ce:	6c 83       	std	Y+4, r22	; 0x04
+    11b2:	df 93       	push	r29
+    11b4:	cf 93       	push	r28
+    11b6:	00 d0       	rcall	.+0      	; 0x11b8 <ADC_enuCallBack+0x6>
+    11b8:	00 d0       	rcall	.+0      	; 0x11ba <ADC_enuCallBack+0x8>
+    11ba:	0f 92       	push	r0
+    11bc:	cd b7       	in	r28, 0x3d	; 61
+    11be:	de b7       	in	r29, 0x3e	; 62
+    11c0:	9b 83       	std	Y+3, r25	; 0x03
+    11c2:	8a 83       	std	Y+2, r24	; 0x02
+    11c4:	7d 83       	std	Y+5, r23	; 0x05
+    11c6:	6c 83       	std	Y+4, r22	; 0x04
 	ES_t Local_enuErrorState = ES_NOK;
-    11d0:	19 82       	std	Y+1, r1	; 0x01
+    11c8:	19 82       	std	Y+1, r1	; 0x01
 	if(Copy_pfunAppFun != NULL)
-    11d2:	8a 81       	ldd	r24, Y+2	; 0x02
-    11d4:	9b 81       	ldd	r25, Y+3	; 0x03
-    11d6:	00 97       	sbiw	r24, 0x00	; 0
-    11d8:	79 f0       	breq	.+30     	; 0x11f8 <ADC_enuCallBack+0x3e>
+    11ca:	8a 81       	ldd	r24, Y+2	; 0x02
+    11cc:	9b 81       	ldd	r25, Y+3	; 0x03
+    11ce:	00 97       	sbiw	r24, 0x00	; 0
+    11d0:	79 f0       	breq	.+30     	; 0x11f0 <ADC_enuCallBack+0x3e>
 	{
 		ADC_pfunISRFun = Copy_pfunAppFun;
-    11da:	8a 81       	ldd	r24, Y+2	; 0x02
-    11dc:	9b 81       	ldd	r25, Y+3	; 0x03
-    11de:	90 93 73 00 	sts	0x0073, r25
-    11e2:	80 93 72 00 	sts	0x0072, r24
+    11d2:	8a 81       	ldd	r24, Y+2	; 0x02
+    11d4:	9b 81       	ldd	r25, Y+3	; 0x03
+    11d6:	90 93 73 00 	sts	0x0073, r25
+    11da:	80 93 72 00 	sts	0x0072, r24
 		ADC_pvidISRParameter = Copy_pvidAppParameter;
-    11e6:	8c 81       	ldd	r24, Y+4	; 0x04
-    11e8:	9d 81       	ldd	r25, Y+5	; 0x05
-    11ea:	90 93 75 00 	sts	0x0075, r25
-    11ee:	80 93 74 00 	sts	0x0074, r24
+    11de:	8c 81       	ldd	r24, Y+4	; 0x04
+    11e0:	9d 81       	ldd	r25, Y+5	; 0x05
+    11e2:	90 93 75 00 	sts	0x0075, r25
+    11e6:	80 93 74 00 	sts	0x0074, r24
 		Local_enuErrorState = ES_OK;
-    11f2:	81 e0       	ldi	r24, 0x01	; 1
-    11f4:	89 83       	std	Y+1, r24	; 0x01
-    11f6:	02 c0       	rjmp	.+4      	; 0x11fc <ADC_enuCallBack+0x42>
+    11ea:	81 e0       	ldi	r24, 0x01	; 1
+    11ec:	89 83       	std	Y+1, r24	; 0x01
+    11ee:	02 c0       	rjmp	.+4      	; 0x11f4 <ADC_enuCallBack+0x42>
 	}
 	else
 	{
 		Local_enuErrorState = ES_NULL_POINTER;
-    11f8:	82 e0       	ldi	r24, 0x02	; 2
-    11fa:	89 83       	std	Y+1, r24	; 0x01
+    11f0:	82 e0       	ldi	r24, 0x02	; 2
+    11f2:	89 83       	std	Y+1, r24	; 0x01
 	}
 
 	return   Local_enuErrorState;
-    11fc:	89 81       	ldd	r24, Y+1	; 0x01
+    11f4:	89 81       	ldd	r24, Y+1	; 0x01
 }
+    11f6:	0f 90       	pop	r0
+    11f8:	0f 90       	pop	r0
+    11fa:	0f 90       	pop	r0
+    11fc:	0f 90       	pop	r0
     11fe:	0f 90       	pop	r0
-    1200:	0f 90       	pop	r0
-    1202:	0f 90       	pop	r0
-    1204:	0f 90       	pop	r0
-    1206:	0f 90       	pop	r0
-    1208:	cf 91       	pop	r28
-    120a:	df 91       	pop	r29
-    120c:	08 95       	ret
+    1200:	cf 91       	pop	r28
+    1202:	df 91       	pop	r29
+    1204:	08 95       	ret
 
-0000120e <ADC_enuSelectChannel>:
+00001206 <ADC_enuSelectChannel>:
 /** Functionality   : Selecting Channel for ADC                             **/
 /*****************************************************************************/
 /*****************************************************************************/
 
 ES_t  ADC_enuSelectChannel(u8 Copy_u8ChannelID)
 {
-    120e:	df 93       	push	r29
-    1210:	cf 93       	push	r28
-    1212:	00 d0       	rcall	.+0      	; 0x1214 <ADC_enuSelectChannel+0x6>
-    1214:	cd b7       	in	r28, 0x3d	; 61
-    1216:	de b7       	in	r29, 0x3e	; 62
-    1218:	8a 83       	std	Y+2, r24	; 0x02
+    1206:	df 93       	push	r29
+    1208:	cf 93       	push	r28
+    120a:	00 d0       	rcall	.+0      	; 0x120c <ADC_enuSelectChannel+0x6>
+    120c:	cd b7       	in	r28, 0x3d	; 61
+    120e:	de b7       	in	r29, 0x3e	; 62
+    1210:	8a 83       	std	Y+2, r24	; 0x02
 	ES_t Local_enuErrorState = ES_NOK;
-    121a:	19 82       	std	Y+1, r1	; 0x01
+    1212:	19 82       	std	Y+1, r1	; 0x01
 
 	ADMUX &= ~0x1f;//clearing first 5 bits
-    121c:	a7 e2       	ldi	r26, 0x27	; 39
-    121e:	b0 e0       	ldi	r27, 0x00	; 0
-    1220:	e7 e2       	ldi	r30, 0x27	; 39
-    1222:	f0 e0       	ldi	r31, 0x00	; 0
-    1224:	80 81       	ld	r24, Z
-    1226:	80 7e       	andi	r24, 0xE0	; 224
-    1228:	8c 93       	st	X, r24
+    1214:	a7 e2       	ldi	r26, 0x27	; 39
+    1216:	b0 e0       	ldi	r27, 0x00	; 0
+    1218:	e7 e2       	ldi	r30, 0x27	; 39
+    121a:	f0 e0       	ldi	r31, 0x00	; 0
+    121c:	80 81       	ld	r24, Z
+    121e:	80 7e       	andi	r24, 0xE0	; 224
+    1220:	8c 93       	st	X, r24
 
 	if(Copy_u8ChannelID >= 0 && Copy_u8ChannelID < 32)
-    122a:	8a 81       	ldd	r24, Y+2	; 0x02
-    122c:	80 32       	cpi	r24, 0x20	; 32
-    122e:	58 f4       	brcc	.+22     	; 0x1246 <ADC_enuSelectChannel+0x38>
+    1222:	8a 81       	ldd	r24, Y+2	; 0x02
+    1224:	80 32       	cpi	r24, 0x20	; 32
+    1226:	58 f4       	brcc	.+22     	; 0x123e <ADC_enuSelectChannel+0x38>
 	{
 		ADMUX |= Copy_u8ChannelID;
-    1230:	a7 e2       	ldi	r26, 0x27	; 39
-    1232:	b0 e0       	ldi	r27, 0x00	; 0
-    1234:	e7 e2       	ldi	r30, 0x27	; 39
-    1236:	f0 e0       	ldi	r31, 0x00	; 0
-    1238:	90 81       	ld	r25, Z
-    123a:	8a 81       	ldd	r24, Y+2	; 0x02
-    123c:	89 2b       	or	r24, r25
-    123e:	8c 93       	st	X, r24
+    1228:	a7 e2       	ldi	r26, 0x27	; 39
+    122a:	b0 e0       	ldi	r27, 0x00	; 0
+    122c:	e7 e2       	ldi	r30, 0x27	; 39
+    122e:	f0 e0       	ldi	r31, 0x00	; 0
+    1230:	90 81       	ld	r25, Z
+    1232:	8a 81       	ldd	r24, Y+2	; 0x02
+    1234:	89 2b       	or	r24, r25
+    1236:	8c 93       	st	X, r24
 		Local_enuErrorState = ES_OK;
-    1240:	81 e0       	ldi	r24, 0x01	; 1
-    1242:	89 83       	std	Y+1, r24	; 0x01
-    1244:	02 c0       	rjmp	.+4      	; 0x124a <ADC_enuSelectChannel+0x3c>
+    1238:	81 e0       	ldi	r24, 0x01	; 1
+    123a:	89 83       	std	Y+1, r24	; 0x01
+    123c:	02 c0       	rjmp	.+4      	; 0x1242 <ADC_enuSelectChannel+0x3c>
 	}
 	else
 	{
 		Local_enuErrorState = ES_OUT_OF_RANGE;
-    1246:	83 e0       	ldi	r24, 0x03	; 3
-    1248:	89 83       	std	Y+1, r24	; 0x01
+    123e:	83 e0       	ldi	r24, 0x03	; 3
+    1240:	89 83       	std	Y+1, r24	; 0x01
 	}
 
 	return   Local_enuErrorState;
-    124a:	89 81       	ldd	r24, Y+1	; 0x01
+    1242:	89 81       	ldd	r24, Y+1	; 0x01
 }
-    124c:	0f 90       	pop	r0
-    124e:	0f 90       	pop	r0
-    1250:	cf 91       	pop	r28
-    1252:	df 91       	pop	r29
-    1254:	08 95       	ret
+    1244:	0f 90       	pop	r0
+    1246:	0f 90       	pop	r0
+    1248:	cf 91       	pop	r28
+    124a:	df 91       	pop	r29
+    124c:	08 95       	ret
 
-00001256 <ADC_enuEnableTriggeringMode>:
+0000124e <ADC_enuEnableTriggeringMode>:
 /** Functionality   : Select & Enable Triggering Mode                       **/
 /*****************************************************************************/
 /*****************************************************************************/
 
 ES_t  ADC_enuEnableTriggeringMode(u8 Copy_u8TriggeringSource)
 {
-    1256:	df 93       	push	r29
-    1258:	cf 93       	push	r28
-    125a:	00 d0       	rcall	.+0      	; 0x125c <ADC_enuEnableTriggeringMode+0x6>
-    125c:	cd b7       	in	r28, 0x3d	; 61
-    125e:	de b7       	in	r29, 0x3e	; 62
-    1260:	8a 83       	std	Y+2, r24	; 0x02
+    124e:	df 93       	push	r29
+    1250:	cf 93       	push	r28
+    1252:	00 d0       	rcall	.+0      	; 0x1254 <ADC_enuEnableTriggeringMode+0x6>
+    1254:	cd b7       	in	r28, 0x3d	; 61
+    1256:	de b7       	in	r29, 0x3e	; 62
+    1258:	8a 83       	std	Y+2, r24	; 0x02
 	ES_t Local_enuErrorState = ES_NOK;
-    1262:	19 82       	std	Y+1, r1	; 0x01
+    125a:	19 82       	std	Y+1, r1	; 0x01
 
 	CLEAR_BIT(ADCSRA , ADCSRA_ADATE);//close Triggering Source Before choosing channel
-    1264:	a6 e2       	ldi	r26, 0x26	; 38
-    1266:	b0 e0       	ldi	r27, 0x00	; 0
-    1268:	e6 e2       	ldi	r30, 0x26	; 38
-    126a:	f0 e0       	ldi	r31, 0x00	; 0
-    126c:	80 81       	ld	r24, Z
-    126e:	8f 7d       	andi	r24, 0xDF	; 223
-    1270:	8c 93       	st	X, r24
+    125c:	a6 e2       	ldi	r26, 0x26	; 38
+    125e:	b0 e0       	ldi	r27, 0x00	; 0
+    1260:	e6 e2       	ldi	r30, 0x26	; 38
+    1262:	f0 e0       	ldi	r31, 0x00	; 0
+    1264:	80 81       	ld	r24, Z
+    1266:	8f 7d       	andi	r24, 0xDF	; 223
+    1268:	8c 93       	st	X, r24
 	switch(ADC_TRIGGER_SOURCE)
 	{
 
 	case FREE_RUNNING_MODE:
 
 		CLEAR_BIT(SFIOR , SFIOR_ADTS0);
-    1272:	a0 e5       	ldi	r26, 0x50	; 80
-    1274:	b0 e0       	ldi	r27, 0x00	; 0
-    1276:	e0 e5       	ldi	r30, 0x50	; 80
-    1278:	f0 e0       	ldi	r31, 0x00	; 0
-    127a:	80 81       	ld	r24, Z
-    127c:	8f 7d       	andi	r24, 0xDF	; 223
-    127e:	8c 93       	st	X, r24
+    126a:	a0 e5       	ldi	r26, 0x50	; 80
+    126c:	b0 e0       	ldi	r27, 0x00	; 0
+    126e:	e0 e5       	ldi	r30, 0x50	; 80
+    1270:	f0 e0       	ldi	r31, 0x00	; 0
+    1272:	80 81       	ld	r24, Z
+    1274:	8f 7d       	andi	r24, 0xDF	; 223
+    1276:	8c 93       	st	X, r24
 		CLEAR_BIT(SFIOR , SFIOR_ADTS1);
-    1280:	a0 e5       	ldi	r26, 0x50	; 80
-    1282:	b0 e0       	ldi	r27, 0x00	; 0
-    1284:	e0 e5       	ldi	r30, 0x50	; 80
-    1286:	f0 e0       	ldi	r31, 0x00	; 0
-    1288:	80 81       	ld	r24, Z
-    128a:	8f 7b       	andi	r24, 0xBF	; 191
-    128c:	8c 93       	st	X, r24
+    1278:	a0 e5       	ldi	r26, 0x50	; 80
+    127a:	b0 e0       	ldi	r27, 0x00	; 0
+    127c:	e0 e5       	ldi	r30, 0x50	; 80
+    127e:	f0 e0       	ldi	r31, 0x00	; 0
+    1280:	80 81       	ld	r24, Z
+    1282:	8f 7b       	andi	r24, 0xBF	; 191
+    1284:	8c 93       	st	X, r24
 		CLEAR_BIT(SFIOR , SFIOR_ADTS2);
-    128e:	a0 e5       	ldi	r26, 0x50	; 80
-    1290:	b0 e0       	ldi	r27, 0x00	; 0
-    1292:	e0 e5       	ldi	r30, 0x50	; 80
-    1294:	f0 e0       	ldi	r31, 0x00	; 0
-    1296:	80 81       	ld	r24, Z
-    1298:	8f 77       	andi	r24, 0x7F	; 127
-    129a:	8c 93       	st	X, r24
+    1286:	a0 e5       	ldi	r26, 0x50	; 80
+    1288:	b0 e0       	ldi	r27, 0x00	; 0
+    128a:	e0 e5       	ldi	r30, 0x50	; 80
+    128c:	f0 e0       	ldi	r31, 0x00	; 0
+    128e:	80 81       	ld	r24, Z
+    1290:	8f 77       	andi	r24, 0x7F	; 127
+    1292:	8c 93       	st	X, r24
 		Local_enuErrorState = ES_OK;
-    129c:	81 e0       	ldi	r24, 0x01	; 1
-    129e:	89 83       	std	Y+1, r24	; 0x01
+    1294:	81 e0       	ldi	r24, 0x01	; 1
+    1296:	89 83       	std	Y+1, r24	; 0x01
 
 		break;
 	default:
 		Local_enuErrorState = ES_OUT_OF_RANGE;
 	}
 	SET_BIT(ADCSRA , ADCSRA_ADATE);//Enable Triggering Source after choosing channel
-    12a0:	a6 e2       	ldi	r26, 0x26	; 38
-    12a2:	b0 e0       	ldi	r27, 0x00	; 0
-    12a4:	e6 e2       	ldi	r30, 0x26	; 38
-    12a6:	f0 e0       	ldi	r31, 0x00	; 0
-    12a8:	80 81       	ld	r24, Z
-    12aa:	80 62       	ori	r24, 0x20	; 32
-    12ac:	8c 93       	st	X, r24
+    1298:	a6 e2       	ldi	r26, 0x26	; 38
+    129a:	b0 e0       	ldi	r27, 0x00	; 0
+    129c:	e6 e2       	ldi	r30, 0x26	; 38
+    129e:	f0 e0       	ldi	r31, 0x00	; 0
+    12a0:	80 81       	ld	r24, Z
+    12a2:	80 62       	ori	r24, 0x20	; 32
+    12a4:	8c 93       	st	X, r24
 
 	return   Local_enuErrorState;
-    12ae:	89 81       	ldd	r24, Y+1	; 0x01
+    12a6:	89 81       	ldd	r24, Y+1	; 0x01
 }
-    12b0:	0f 90       	pop	r0
-    12b2:	0f 90       	pop	r0
-    12b4:	cf 91       	pop	r28
-    12b6:	df 91       	pop	r29
-    12b8:	08 95       	ret
+    12a8:	0f 90       	pop	r0
+    12aa:	0f 90       	pop	r0
+    12ac:	cf 91       	pop	r28
+    12ae:	df 91       	pop	r29
+    12b0:	08 95       	ret
 
-000012ba <ADC_enuDisableTriggeringMode>:
+000012b2 <ADC_enuDisableTriggeringMode>:
 /** Functionality   : Disable Triggering Mode                               **/
 /*****************************************************************************/
 /*****************************************************************************/
 
 ES_t  ADC_enuDisableTriggeringMode(void)
 {
-    12ba:	df 93       	push	r29
-    12bc:	cf 93       	push	r28
-    12be:	0f 92       	push	r0
-    12c0:	cd b7       	in	r28, 0x3d	; 61
-    12c2:	de b7       	in	r29, 0x3e	; 62
+    12b2:	df 93       	push	r29
+    12b4:	cf 93       	push	r28
+    12b6:	0f 92       	push	r0
+    12b8:	cd b7       	in	r28, 0x3d	; 61
+    12ba:	de b7       	in	r29, 0x3e	; 62
 	ES_t Local_enuErrorState = ES_NOK;
-    12c4:	19 82       	std	Y+1, r1	; 0x01
+    12bc:	19 82       	std	Y+1, r1	; 0x01
 
 	CLEAR_BIT(ADCSRA , ADCSRA_ADATE);//disable auto triggering bit
-    12c6:	a6 e2       	ldi	r26, 0x26	; 38
-    12c8:	b0 e0       	ldi	r27, 0x00	; 0
-    12ca:	e6 e2       	ldi	r30, 0x26	; 38
-    12cc:	f0 e0       	ldi	r31, 0x00	; 0
-    12ce:	80 81       	ld	r24, Z
-    12d0:	8f 7d       	andi	r24, 0xDF	; 223
-    12d2:	8c 93       	st	X, r24
+    12be:	a6 e2       	ldi	r26, 0x26	; 38
+    12c0:	b0 e0       	ldi	r27, 0x00	; 0
+    12c2:	e6 e2       	ldi	r30, 0x26	; 38
+    12c4:	f0 e0       	ldi	r31, 0x00	; 0
+    12c6:	80 81       	ld	r24, Z
+    12c8:	8f 7d       	andi	r24, 0xDF	; 223
+    12ca:	8c 93       	st	X, r24
 	Local_enuErrorState = ES_OK;
-    12d4:	81 e0       	ldi	r24, 0x01	; 1
-    12d6:	89 83       	std	Y+1, r24	; 0x01
+    12cc:	81 e0       	ldi	r24, 0x01	; 1
+    12ce:	89 83       	std	Y+1, r24	; 0x01
 
 	return   Local_enuErrorState;
-    12d8:	89 81       	ldd	r24, Y+1	; 0x01
+    12d0:	89 81       	ldd	r24, Y+1	; 0x01
 }
-    12da:	0f 90       	pop	r0
-    12dc:	cf 91       	pop	r28
-    12de:	df 91       	pop	r29
-    12e0:	08 95       	ret
+    12d2:	0f 90       	pop	r0
+    12d4:	cf 91       	pop	r28
+    12d6:	df 91       	pop	r29
+    12d8:	08 95       	ret
 
-000012e2 <ADC_enuEnable>:
+000012da <ADC_enuEnable>:
 /** Functionality   : Enable ADC                                            **/
 /*****************************************************************************/
 /*****************************************************************************/
 
 ES_t  ADC_enuEnable(void)
 {
-    12e2:	df 93       	push	r29
-    12e4:	cf 93       	push	r28
-    12e6:	0f 92       	push	r0
-    12e8:	cd b7       	in	r28, 0x3d	; 61
-    12ea:	de b7       	in	r29, 0x3e	; 62
+    12da:	df 93       	push	r29
+    12dc:	cf 93       	push	r28
+    12de:	0f 92       	push	r0
+    12e0:	cd b7       	in	r28, 0x3d	; 61
+    12e2:	de b7       	in	r29, 0x3e	; 62
 	ES_t Local_enuErrorState = ES_NOK;
-    12ec:	19 82       	std	Y+1, r1	; 0x01
+    12e4:	19 82       	std	Y+1, r1	; 0x01
 
 	SET_BIT(ADCSRA , ADCSRA_ADEN);
-    12ee:	a6 e2       	ldi	r26, 0x26	; 38
-    12f0:	b0 e0       	ldi	r27, 0x00	; 0
-    12f2:	e6 e2       	ldi	r30, 0x26	; 38
-    12f4:	f0 e0       	ldi	r31, 0x00	; 0
-    12f6:	80 81       	ld	r24, Z
-    12f8:	80 68       	ori	r24, 0x80	; 128
-    12fa:	8c 93       	st	X, r24
+    12e6:	a6 e2       	ldi	r26, 0x26	; 38
+    12e8:	b0 e0       	ldi	r27, 0x00	; 0
+    12ea:	e6 e2       	ldi	r30, 0x26	; 38
+    12ec:	f0 e0       	ldi	r31, 0x00	; 0
+    12ee:	80 81       	ld	r24, Z
+    12f0:	80 68       	ori	r24, 0x80	; 128
+    12f2:	8c 93       	st	X, r24
 	Local_enuErrorState = ES_OK;
-    12fc:	81 e0       	ldi	r24, 0x01	; 1
-    12fe:	89 83       	std	Y+1, r24	; 0x01
+    12f4:	81 e0       	ldi	r24, 0x01	; 1
+    12f6:	89 83       	std	Y+1, r24	; 0x01
 
 	return   Local_enuErrorState;
-    1300:	89 81       	ldd	r24, Y+1	; 0x01
+    12f8:	89 81       	ldd	r24, Y+1	; 0x01
 }
-    1302:	0f 90       	pop	r0
-    1304:	cf 91       	pop	r28
-    1306:	df 91       	pop	r29
-    1308:	08 95       	ret
+    12fa:	0f 90       	pop	r0
+    12fc:	cf 91       	pop	r28
+    12fe:	df 91       	pop	r29
+    1300:	08 95       	ret
 
-0000130a <ADC_enuDisable>:
+00001302 <ADC_enuDisable>:
 /** Functionality   : Disable ADC                                           **/
 /*****************************************************************************/
 /*****************************************************************************/
 
 ES_t  ADC_enuDisable(void)
 {
-    130a:	df 93       	push	r29
-    130c:	cf 93       	push	r28
-    130e:	0f 92       	push	r0
-    1310:	cd b7       	in	r28, 0x3d	; 61
-    1312:	de b7       	in	r29, 0x3e	; 62
+    1302:	df 93       	push	r29
+    1304:	cf 93       	push	r28
+    1306:	0f 92       	push	r0
+    1308:	cd b7       	in	r28, 0x3d	; 61
+    130a:	de b7       	in	r29, 0x3e	; 62
 	ES_t Local_enuErrorState = ES_NOK;
-    1314:	19 82       	std	Y+1, r1	; 0x01
+    130c:	19 82       	std	Y+1, r1	; 0x01
 
 	CLEAR_BIT(ADCSRA , ADCSRA_ADEN);
-    1316:	a6 e2       	ldi	r26, 0x26	; 38
-    1318:	b0 e0       	ldi	r27, 0x00	; 0
-    131a:	e6 e2       	ldi	r30, 0x26	; 38
-    131c:	f0 e0       	ldi	r31, 0x00	; 0
-    131e:	80 81       	ld	r24, Z
-    1320:	8f 77       	andi	r24, 0x7F	; 127
-    1322:	8c 93       	st	X, r24
+    130e:	a6 e2       	ldi	r26, 0x26	; 38
+    1310:	b0 e0       	ldi	r27, 0x00	; 0
+    1312:	e6 e2       	ldi	r30, 0x26	; 38
+    1314:	f0 e0       	ldi	r31, 0x00	; 0
+    1316:	80 81       	ld	r24, Z
+    1318:	8f 77       	andi	r24, 0x7F	; 127
+    131a:	8c 93       	st	X, r24
 	Local_enuErrorState = ES_OK;
-    1324:	81 e0       	ldi	r24, 0x01	; 1
-    1326:	89 83       	std	Y+1, r24	; 0x01
+    131c:	81 e0       	ldi	r24, 0x01	; 1
+    131e:	89 83       	std	Y+1, r24	; 0x01
 
 	return   Local_enuErrorState;
-    1328:	89 81       	ldd	r24, Y+1	; 0x01
+    1320:	89 81       	ldd	r24, Y+1	; 0x01
 }
-    132a:	0f 90       	pop	r0
-    132c:	cf 91       	pop	r28
-    132e:	df 91       	pop	r29
-    1330:	08 95       	ret
+    1322:	0f 90       	pop	r0
+    1324:	cf 91       	pop	r28
+    1326:	df 91       	pop	r29
+    1328:	08 95       	ret
 
-00001332 <ADC_enuEnableInterruptMode>:
+0000132a <ADC_enuEnableInterruptMode>:
 /** Functionality   : Enable Interrupt Mode                                 **/
 /*****************************************************************************/
 /*****************************************************************************/
 
 ES_t  ADC_enuEnableInterruptMode(void)
 {
-    1332:	df 93       	push	r29
-    1334:	cf 93       	push	r28
-    1336:	0f 92       	push	r0
-    1338:	cd b7       	in	r28, 0x3d	; 61
-    133a:	de b7       	in	r29, 0x3e	; 62
+    132a:	df 93       	push	r29
+    132c:	cf 93       	push	r28
+    132e:	0f 92       	push	r0
+    1330:	cd b7       	in	r28, 0x3d	; 61
+    1332:	de b7       	in	r29, 0x3e	; 62
 	ES_t Local_enuErrorState = ES_NOK;
-    133c:	19 82       	std	Y+1, r1	; 0x01
+    1334:	19 82       	std	Y+1, r1	; 0x01
 
 	SET_BIT(ADCSRA , ADCSRA_ADIE); //set ADC Interrupt enable bit to one
-    133e:	a6 e2       	ldi	r26, 0x26	; 38
-    1340:	b0 e0       	ldi	r27, 0x00	; 0
-    1342:	e6 e2       	ldi	r30, 0x26	; 38
-    1344:	f0 e0       	ldi	r31, 0x00	; 0
-    1346:	80 81       	ld	r24, Z
-    1348:	88 60       	ori	r24, 0x08	; 8
-    134a:	8c 93       	st	X, r24
+    1336:	a6 e2       	ldi	r26, 0x26	; 38
+    1338:	b0 e0       	ldi	r27, 0x00	; 0
+    133a:	e6 e2       	ldi	r30, 0x26	; 38
+    133c:	f0 e0       	ldi	r31, 0x00	; 0
+    133e:	80 81       	ld	r24, Z
+    1340:	88 60       	ori	r24, 0x08	; 8
+    1342:	8c 93       	st	X, r24
 	Local_enuErrorState = ES_OK;
-    134c:	81 e0       	ldi	r24, 0x01	; 1
-    134e:	89 83       	std	Y+1, r24	; 0x01
+    1344:	81 e0       	ldi	r24, 0x01	; 1
+    1346:	89 83       	std	Y+1, r24	; 0x01
 
 	return   Local_enuErrorState;
-    1350:	89 81       	ldd	r24, Y+1	; 0x01
+    1348:	89 81       	ldd	r24, Y+1	; 0x01
 }
-    1352:	0f 90       	pop	r0
-    1354:	cf 91       	pop	r28
-    1356:	df 91       	pop	r29
-    1358:	08 95       	ret
+    134a:	0f 90       	pop	r0
+    134c:	cf 91       	pop	r28
+    134e:	df 91       	pop	r29
+    1350:	08 95       	ret
 
-0000135a <ADC_enuDisableInterruptMode>:
+00001352 <ADC_enuDisableInterruptMode>:
 /** Functionality   : Disable Interrupt Mode                                **/
 /*****************************************************************************/
 /*****************************************************************************/
 
 ES_t  ADC_enuDisableInterruptMode(void)
 {
-    135a:	df 93       	push	r29
-    135c:	cf 93       	push	r28
-    135e:	0f 92       	push	r0
-    1360:	cd b7       	in	r28, 0x3d	; 61
-    1362:	de b7       	in	r29, 0x3e	; 62
+    1352:	df 93       	push	r29
+    1354:	cf 93       	push	r28
+    1356:	0f 92       	push	r0
+    1358:	cd b7       	in	r28, 0x3d	; 61
+    135a:	de b7       	in	r29, 0x3e	; 62
 	ES_t Local_enuErrorState = ES_NOK;
-    1364:	19 82       	std	Y+1, r1	; 0x01
+    135c:	19 82       	std	Y+1, r1	; 0x01
 
 	CLEAR_BIT(ADCSRA , ADCSRA_ADIE); //clear ADC Interrupt enable bit
-    1366:	a6 e2       	ldi	r26, 0x26	; 38
-    1368:	b0 e0       	ldi	r27, 0x00	; 0
-    136a:	e6 e2       	ldi	r30, 0x26	; 38
-    136c:	f0 e0       	ldi	r31, 0x00	; 0
-    136e:	80 81       	ld	r24, Z
-    1370:	87 7f       	andi	r24, 0xF7	; 247
-    1372:	8c 93       	st	X, r24
+    135e:	a6 e2       	ldi	r26, 0x26	; 38
+    1360:	b0 e0       	ldi	r27, 0x00	; 0
+    1362:	e6 e2       	ldi	r30, 0x26	; 38
+    1364:	f0 e0       	ldi	r31, 0x00	; 0
+    1366:	80 81       	ld	r24, Z
+    1368:	87 7f       	andi	r24, 0xF7	; 247
+    136a:	8c 93       	st	X, r24
 	Local_enuErrorState = ES_OK;
-    1374:	81 e0       	ldi	r24, 0x01	; 1
-    1376:	89 83       	std	Y+1, r24	; 0x01
+    136c:	81 e0       	ldi	r24, 0x01	; 1
+    136e:	89 83       	std	Y+1, r24	; 0x01
 
 	return   Local_enuErrorState;
-    1378:	89 81       	ldd	r24, Y+1	; 0x01
+    1370:	89 81       	ldd	r24, Y+1	; 0x01
 }
-    137a:	0f 90       	pop	r0
-    137c:	cf 91       	pop	r28
-    137e:	df 91       	pop	r29
-    1380:	08 95       	ret
+    1372:	0f 90       	pop	r0
+    1374:	cf 91       	pop	r28
+    1376:	df 91       	pop	r29
+    1378:	08 95       	ret
 
-00001382 <__vector_16>:
+0000137a <__vector_16>:
 
 
 /*ISR Fun For ADC*/
 ISR(VECT_ADC)
 {
-    1382:	1f 92       	push	r1
-    1384:	0f 92       	push	r0
-    1386:	0f b6       	in	r0, 0x3f	; 63
-    1388:	0f 92       	push	r0
-    138a:	11 24       	eor	r1, r1
-    138c:	2f 93       	push	r18
-    138e:	3f 93       	push	r19
-    1390:	4f 93       	push	r20
-    1392:	5f 93       	push	r21
-    1394:	6f 93       	push	r22
-    1396:	7f 93       	push	r23
-    1398:	8f 93       	push	r24
-    139a:	9f 93       	push	r25
-    139c:	af 93       	push	r26
-    139e:	bf 93       	push	r27
-    13a0:	ef 93       	push	r30
-    13a2:	ff 93       	push	r31
-    13a4:	df 93       	push	r29
-    13a6:	cf 93       	push	r28
-    13a8:	cd b7       	in	r28, 0x3d	; 61
-    13aa:	de b7       	in	r29, 0x3e	; 62
+    137a:	1f 92       	push	r1
+    137c:	0f 92       	push	r0
+    137e:	0f b6       	in	r0, 0x3f	; 63
+    1380:	0f 92       	push	r0
+    1382:	11 24       	eor	r1, r1
+    1384:	2f 93       	push	r18
+    1386:	3f 93       	push	r19
+    1388:	4f 93       	push	r20
+    138a:	5f 93       	push	r21
+    138c:	6f 93       	push	r22
+    138e:	7f 93       	push	r23
+    1390:	8f 93       	push	r24
+    1392:	9f 93       	push	r25
+    1394:	af 93       	push	r26
+    1396:	bf 93       	push	r27
+    1398:	ef 93       	push	r30
+    139a:	ff 93       	push	r31
+    139c:	df 93       	push	r29
+    139e:	cf 93       	push	r28
+    13a0:	cd b7       	in	r28, 0x3d	; 61
+    13a2:	de b7       	in	r29, 0x3e	; 62
 	if(ADC_pfunISRFun != NULL)
-    13ac:	80 91 72 00 	lds	r24, 0x0072
-    13b0:	90 91 73 00 	lds	r25, 0x0073
-    13b4:	00 97       	sbiw	r24, 0x00	; 0
-    13b6:	49 f0       	breq	.+18     	; 0x13ca <__vector_16+0x48>
+    13a4:	80 91 72 00 	lds	r24, 0x0072
+    13a8:	90 91 73 00 	lds	r25, 0x0073
+    13ac:	00 97       	sbiw	r24, 0x00	; 0
+    13ae:	49 f0       	breq	.+18     	; 0x13c2 <__vector_16+0x48>
 	{
 		ADC_pfunISRFun(ADC_pvidISRParameter);
-    13b8:	e0 91 72 00 	lds	r30, 0x0072
-    13bc:	f0 91 73 00 	lds	r31, 0x0073
-    13c0:	80 91 74 00 	lds	r24, 0x0074
-    13c4:	90 91 75 00 	lds	r25, 0x0075
-    13c8:	09 95       	icall
+    13b0:	e0 91 72 00 	lds	r30, 0x0072
+    13b4:	f0 91 73 00 	lds	r31, 0x0073
+    13b8:	80 91 74 00 	lds	r24, 0x0074
+    13bc:	90 91 75 00 	lds	r25, 0x0075
+    13c0:	09 95       	icall
 	}
 
 }
-    13ca:	cf 91       	pop	r28
-    13cc:	df 91       	pop	r29
-    13ce:	ff 91       	pop	r31
-    13d0:	ef 91       	pop	r30
-    13d2:	bf 91       	pop	r27
-    13d4:	af 91       	pop	r26
-    13d6:	9f 91       	pop	r25
-    13d8:	8f 91       	pop	r24
-    13da:	7f 91       	pop	r23
-    13dc:	6f 91       	pop	r22
-    13de:	5f 91       	pop	r21
-    13e0:	4f 91       	pop	r20
-    13e2:	3f 91       	pop	r19
-    13e4:	2f 91       	pop	r18
-    13e6:	0f 90       	pop	r0
-    13e8:	0f be       	out	0x3f, r0	; 63
-    13ea:	0f 90       	pop	r0
-    13ec:	1f 90       	pop	r1
-    13ee:	18 95       	reti
+    13c2:	cf 91       	pop	r28
+    13c4:	df 91       	pop	r29
+    13c6:	ff 91       	pop	r31
+    13c8:	ef 91       	pop	r30
+    13ca:	bf 91       	pop	r27
+    13cc:	af 91       	pop	r26
+    13ce:	9f 91       	pop	r25
+    13d0:	8f 91       	pop	r24
+    13d2:	7f 91       	pop	r23
+    13d4:	6f 91       	pop	r22
+    13d6:	5f 91       	pop	r21
+    13d8:	4f 91       	pop	r20
+    13da:	3f 91       	pop	r19
+    13dc:	2f 91       	pop	r18
+    13de:	0f 90       	pop	r0
+    13e0:	0f be       	out	0x3f, r0	; 63
+    13e2:	0f 90       	pop	r0
+    13e4:	1f 90       	pop	r1
+    13e6:	18 95       	reti
 
-000013f0 <main>:
+000013e8 <main>:
 
 #include "../MCAL/ADC/ADC_Interface.h"
 
 
 int main()
 {
-    13f0:	df 93       	push	r29
-    13f2:	cf 93       	push	r28
-    13f4:	00 d0       	rcall	.+0      	; 0x13f6 <main+0x6>
-    13f6:	0f 92       	push	r0
-    13f8:	cd b7       	in	r28, 0x3d	; 61
-    13fa:	de b7       	in	r29, 0x3e	; 62
+    13e8:	df 93       	push	r29
+    13ea:	cf 93       	push	r28
+    13ec:	00 d0       	rcall	.+0      	; 0x13ee <main+0x6>
+    13ee:	0f 92       	push	r0
+    13f0:	cd b7       	in	r28, 0x3d	; 61
+    13f2:	de b7       	in	r29, 0x3e	; 62
 	u8  ADC_READ_8_Bit = 0;
-    13fc:	1b 82       	std	Y+3, r1	; 0x03
+    13f4:	1b 82       	std	Y+3, r1	; 0x03
 	u16 ADC_READ_16_Bit = 0;
-    13fe:	1a 82       	std	Y+2, r1	; 0x02
-    1400:	19 82       	std	Y+1, r1	; 0x01
+    13f6:	1a 82       	std	Y+2, r1	; 0x02
+    13f8:	19 82       	std	Y+1, r1	; 0x01
 
 	PORT_voidInit();
-    1402:	0e 94 49 00 	call	0x92	; 0x92 <PORT_voidInit>
+    13fa:	0e 94 49 00 	call	0x92	; 0x92 <PORT_voidInit>
 
-	ADC_enuInitialize();
-    1406:	0e 94 01 08 	call	0x1002	; 0x1002 <ADC_enuInitialize>
 	ADC_enuEnable();
-    140a:	0e 94 71 09 	call	0x12e2	; 0x12e2 <ADC_enuEnable>
+    13fe:	0e 94 6d 09 	call	0x12da	; 0x12da <ADC_enuEnable>
+	ADC_enuInitialize();
+    1402:	0e 94 01 08 	call	0x1002	; 0x1002 <ADC_enuInitialize>
+
 	ADC_enuSelectChannel(2);
-    140e:	82 e0       	ldi	r24, 0x02	; 2
-    1410:	0e 94 07 09 	call	0x120e	; 0x120e <ADC_enuSelectChannel>
+    1406:	82 e0       	ldi	r24, 0x02	; 2
+    1408:	0e 94 03 09 	call	0x1206	; 0x1206 <ADC_enuSelectChannel>
     ADC_enuDisableTriggeringMode();//work in single Mode
-    1414:	0e 94 5d 09 	call	0x12ba	; 0x12ba <ADC_enuDisableTriggeringMode>
+    140c:	0e 94 59 09 	call	0x12b2	; 0x12b2 <ADC_enuDisableTriggeringMode>
 	ADC_enuDisableInterruptMode();
-    1418:	0e 94 ad 09 	call	0x135a	; 0x135a <ADC_enuDisableInterruptMode>
+    1410:	0e 94 a9 09 	call	0x1352	; 0x1352 <ADC_enuDisableInterruptMode>
 
     while(1)
 	{
 
     	ADC_enuStartConversion();
-    141c:	0e 94 3c 08 	call	0x1078	; 0x1078 <ADC_enuStartConversion>
+    1414:	0e 94 3c 08 	call	0x1078	; 0x1078 <ADC_enuStartConversion>
     	ADC_enuPollingSystem();
-    1420:	0e 94 50 08 	call	0x10a0	; 0x10a0 <ADC_enuPollingSystem>
+    1418:	0e 94 50 08 	call	0x10a0	; 0x10a0 <ADC_enuPollingSystem>
         ADC_enuReadHighValue(&ADC_READ_8_Bit);
-    1424:	ce 01       	movw	r24, r28
-    1426:	03 96       	adiw	r24, 0x03	; 3
-    1428:	0e 94 6f 08 	call	0x10de	; 0x10de <ADC_enuReadHighValue>
+    141c:	ce 01       	movw	r24, r28
+    141e:	03 96       	adiw	r24, 0x03	; 3
+    1420:	0e 94 6f 08 	call	0x10de	; 0x10de <ADC_enuReadHighValue>
         DIO_enuSetPortValue(DIO_u8PORTC , ADC_READ_8_Bit);
-    142c:	9b 81       	ldd	r25, Y+3	; 0x03
-    142e:	82 e0       	ldi	r24, 0x02	; 2
-    1430:	69 2f       	mov	r22, r25
-    1432:	0e 94 be 04 	call	0x97c	; 0x97c <DIO_enuSetPortValue>
-    1436:	f2 cf       	rjmp	.-28     	; 0x141c <main+0x2c>
+    1424:	9b 81       	ldd	r25, Y+3	; 0x03
+    1426:	82 e0       	ldi	r24, 0x02	; 2
+    1428:	69 2f       	mov	r22, r25
+    142a:	0e 94 be 04 	call	0x97c	; 0x97c <DIO_enuSetPortValue>
+    142e:	f2 cf       	rjmp	.-28     	; 0x1414 <main+0x2c>
 
-00001438 <_exit>:
-    1438:	f8 94       	cli
+00001430 <_exit>:
+    1430:	f8 94       	cli
 
-0000143a <__stop_program>:
-    143a:	ff cf       	rjmp	.-2      	; 0x143a <__stop_program>
+00001432 <__stop_program>:
+    1432:	ff cf       	rjmp	.-2      	; 0x1432 <__stop_program>

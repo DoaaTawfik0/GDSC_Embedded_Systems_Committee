@@ -166,10 +166,10 @@ ES_t  ADC_enuStartConversion(void)
 ES_t  ADC_enuPollingSystem(void)
 {
 	ES_t Local_enuErrorState = ES_NOK;
-	u8   Local_u8FlagValue = GET_BIT(ADCSRA , ADCSRA_ADIF);
 
-	while(Local_u8FlagValue == 0);//wait on flag
-	CLEAR_BIT(ADCSRA , ADCSRA_ADIF);//Clear Flag
+
+	while(GET_BIT(ADCSRA , ADCSRA_ADIF) == 0);//wait on flag
+	CLEAR_BIT(ADCSRA , ADCSRA_ADIF);//Clear Flag BY Sstting bit to 1
 	Local_enuErrorState = ES_OK;
 
 	return   Local_enuErrorState;
@@ -195,7 +195,7 @@ ES_t  ADC_enuReadHighValue(u8* Copy_pu8Value)
 		}
 		else if(ADC_ADJUSTMENT == RIGHT_ADJUST)
 		{
-			*Copy_pu8Value |= (ADCL >> 2);
+			*Copy_pu8Value = (ADCL >> 2);
 			*Copy_pu8Value |= (ADCH << 6);
 		}
 		Local_enuErrorState = ES_OK;
@@ -224,7 +224,7 @@ ES_t  ADC_enuReadData(u16* Copy_pu16Value)
 	{
 		if(ADC_ADJUSTMENT == LEFT_ADJUST)
 		{
-			*Copy_pu16Value |= (ADCL >> 6);
+			*Copy_pu16Value  = (ADCL >> 6);
 			*Copy_pu16Value |= (ADCH << 2);
 		}
 		else if(ADC_ADJUSTMENT == RIGHT_ADJUST)
@@ -492,6 +492,3 @@ ISR(VECT_ADC)
 	}
 
 }
-
-
-

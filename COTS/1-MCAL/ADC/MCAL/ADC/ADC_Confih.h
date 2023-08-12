@@ -11,6 +11,7 @@
 #ifndef   ADC_CONFIG_H_
 #define   ADC_CONFIG_H_
 
+
 #include  "ADC_Private.h"
 
 #define   ADC_PRESCALER          PRESCALER_128

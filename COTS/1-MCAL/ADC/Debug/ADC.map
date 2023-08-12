@@ -122,7 +122,7 @@ LOAD c:/users/yoga 640/documents/imt_sdk_win_64/imt_sdk_win_64/winavr/bin/../lib
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000     0x143c
+.text           0x00000000     0x1434
  *(.vectors)
  .vectors       0x00000000       0x54 c:/users/yoga 640/documents/imt_sdk_win_64/imt_sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm32.o
                 0x00000000                __vectors
@@ -268,48 +268,48 @@ LOAD c:/users/yoga 640/documents/imt_sdk_win_64/imt_sdk_win_64/winavr/bin/../lib
                 0x000010a0       0x3e ./MCAL/ADC/ADC_Program.o
                 0x000010a0                ADC_enuPollingSystem
  .text.ADC_enuReadHighValue
-                0x000010de       0x76 ./MCAL/ADC/ADC_Program.o
+                0x000010de       0x6e ./MCAL/ADC/ADC_Program.o
                 0x000010de                ADC_enuReadHighValue
  .text.ADC_enuReadData
-                0x00001154       0x66 ./MCAL/ADC/ADC_Program.o
-                0x00001154                ADC_enuReadData
+                0x0000114c       0x66 ./MCAL/ADC/ADC_Program.o
+                0x0000114c                ADC_enuReadData
  .text.ADC_enuCallBack
-                0x000011ba       0x54 ./MCAL/ADC/ADC_Program.o
-                0x000011ba                ADC_enuCallBack
+                0x000011b2       0x54 ./MCAL/ADC/ADC_Program.o
+                0x000011b2                ADC_enuCallBack
  .text.ADC_enuSelectChannel
-                0x0000120e       0x48 ./MCAL/ADC/ADC_Program.o
-                0x0000120e                ADC_enuSelectChannel
+                0x00001206       0x48 ./MCAL/ADC/ADC_Program.o
+                0x00001206                ADC_enuSelectChannel
  .text.ADC_enuEnableTriggeringMode
-                0x00001256       0x64 ./MCAL/ADC/ADC_Program.o
-                0x00001256                ADC_enuEnableTriggeringMode
+                0x0000124e       0x64 ./MCAL/ADC/ADC_Program.o
+                0x0000124e                ADC_enuEnableTriggeringMode
  .text.ADC_enuDisableTriggeringMode
-                0x000012ba       0x28 ./MCAL/ADC/ADC_Program.o
-                0x000012ba                ADC_enuDisableTriggeringMode
+                0x000012b2       0x28 ./MCAL/ADC/ADC_Program.o
+                0x000012b2                ADC_enuDisableTriggeringMode
  .text.ADC_enuEnable
-                0x000012e2       0x28 ./MCAL/ADC/ADC_Program.o
-                0x000012e2                ADC_enuEnable
+                0x000012da       0x28 ./MCAL/ADC/ADC_Program.o
+                0x000012da                ADC_enuEnable
  .text.ADC_enuDisable
-                0x0000130a       0x28 ./MCAL/ADC/ADC_Program.o
-                0x0000130a                ADC_enuDisable
+                0x00001302       0x28 ./MCAL/ADC/ADC_Program.o
+                0x00001302                ADC_enuDisable
  .text.ADC_enuEnableInterruptMode
-                0x00001332       0x28 ./MCAL/ADC/ADC_Program.o
-                0x00001332                ADC_enuEnableInterruptMode
+                0x0000132a       0x28 ./MCAL/ADC/ADC_Program.o
+                0x0000132a                ADC_enuEnableInterruptMode
  .text.ADC_enuDisableInterruptMode
-                0x0000135a       0x28 ./MCAL/ADC/ADC_Program.o
-                0x0000135a                ADC_enuDisableInterruptMode
+                0x00001352       0x28 ./MCAL/ADC/ADC_Program.o
+                0x00001352                ADC_enuDisableInterruptMode
  .text.__vector_16
-                0x00001382       0x6e ./MCAL/ADC/ADC_Program.o
-                0x00001382                __vector_16
- .text.main     0x000013f0       0x48 ./APP/main.o
-                0x000013f0                main
- .text.libgcc   0x00001438        0x0 c:/users/yoga 640/documents/imt_sdk_win_64/imt_sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
- .text.libgcc   0x00001438        0x0 c:/users/yoga 640/documents/imt_sdk_win_64/imt_sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
- .text.libgcc   0x00001438        0x0 c:/users/yoga 640/documents/imt_sdk_win_64/imt_sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
-                0x00001438                . = ALIGN (0x2)
+                0x0000137a       0x6e ./MCAL/ADC/ADC_Program.o
+                0x0000137a                __vector_16
+ .text.main     0x000013e8       0x48 ./APP/main.o
+                0x000013e8                main
+ .text.libgcc   0x00001430        0x0 c:/users/yoga 640/documents/imt_sdk_win_64/imt_sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .text.libgcc   0x00001430        0x0 c:/users/yoga 640/documents/imt_sdk_win_64/imt_sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+ .text.libgcc   0x00001430        0x0 c:/users/yoga 640/documents/imt_sdk_win_64/imt_sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+                0x00001430                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00001438        0x0 c:/users/yoga 640/documents/imt_sdk_win_64/imt_sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
-                0x00001438                exit
-                0x00001438                _exit
+ .fini9         0x00001430        0x0 c:/users/yoga 640/documents/imt_sdk_win_64/imt_sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+                0x00001430                exit
+                0x00001430                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -328,11 +328,11 @@ LOAD c:/users/yoga 640/documents/imt_sdk_win_64/imt_sdk_win_64/winavr/bin/../lib
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00001438        0x4 c:/users/yoga 640/documents/imt_sdk_win_64/imt_sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .fini0         0x00001430        0x4 c:/users/yoga 640/documents/imt_sdk_win_64/imt_sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x0000143c                _etext = .
+                0x00001434                _etext = .
 
-.data           0x00800060        0x6 load address 0x0000143c
+.data           0x00800060        0x6 load address 0x00001434
                 0x00800060                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00800060        0x0 c:/users/yoga 640/documents/imt_sdk_win_64/imt_sdk_win_64/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm32.o
@@ -382,8 +382,8 @@ LOAD c:/users/yoga 640/documents/imt_sdk_win_64/imt_sdk_win_64/winavr/bin/../lib
                 0x00800074        0x2 ./MCAL/ADC/ADC_Program.o
  *(COMMON)
                 0x00800076                PROVIDE (__bss_end, .)
-                0x0000143c                __data_load_start = LOADADDR (.data)
-                0x00001442                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x00001434                __data_load_start = LOADADDR (.data)
+                0x0000143a                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x00800076        0x0
                 0x00800076                PROVIDE (__noinit_start, .)
@@ -408,7 +408,7 @@ LOAD c:/users/yoga 640/documents/imt_sdk_win_64/imt_sdk_win_64/winavr/bin/../lib
 .signature
  *(.signature*)
 
-.stab           0x00000000     0x22b0
+.stab           0x00000000     0x2298
  *(.stab)
  .stab          0x00000000      0x210 ./MCAL/Port/Port_Program.o
  .stab          0x00000210      0x258 ./MCAL/GIE/GIE_Program.o
@@ -419,14 +419,14 @@ LOAD c:/users/yoga 640/documents/imt_sdk_win_64/imt_sdk_win_64/winavr/bin/../lib
                                 0x1bc (size before relaxing)
  .stab          0x00000f60      0x750 ./MCAL/DIO/DIO_Program.o
                                 0x75c (size before relaxing)
- .stab          0x000016b0      0x96c ./MCAL/ADC/ADC_Program.o
-                                0x978 (size before relaxing)
- .stab          0x0000201c      0x294 ./APP/main.o
+ .stab          0x000016b0      0x954 ./MCAL/ADC/ADC_Program.o
+                                0x960 (size before relaxing)
+ .stab          0x00002004      0x294 ./APP/main.o
                                 0x2a0 (size before relaxing)
 
-.stabstr        0x00000000      0xe2a
+.stabstr        0x00000000      0xe12
  *(.stabstr)
- .stabstr       0x00000000      0xe2a ./MCAL/Port/Port_Program.o
+ .stabstr       0x00000000      0xe12 ./MCAL/Port/Port_Program.o
 
 .stab.excl
  *(.stab.excl)

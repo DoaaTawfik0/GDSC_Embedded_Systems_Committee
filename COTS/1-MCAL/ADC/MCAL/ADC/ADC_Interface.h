@@ -15,8 +15,8 @@ ES_t  ADC_enuInitialize(void);
 ES_t  ADC_enuStartConversion(void);
 ES_t  ADC_enuPollingSystem(void);
 
-ES_t  ADC_enuReadHighValue(u8* Copy_pu8Value);
 ES_t  ADC_enuReadData(u16* Copy_pu16Value);
+ES_t  ADC_enuReadHighValue(u8* Copy_pu8Value);
 
 ES_t  ADC_enuCallBack(volatile void(*Copy_pfunAppFun)(void*) , void* Copy_pvidAppParameter);
 

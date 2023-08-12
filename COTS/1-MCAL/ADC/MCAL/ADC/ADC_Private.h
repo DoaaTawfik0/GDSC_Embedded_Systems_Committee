@@ -12,13 +12,13 @@
 #define   ADC_PRIVATE_H_
 
 
-#define   PRESCALER_2                       11
-#define   PRESCALER_4                       12
-#define   PRESCALER_8                       13
-#define   PRESCALER_16                      14
-#define   PRESCALER_32                      15
-#define   PRESCALER_64                      16
-#define   PRESCALER_128                     17
+#define   PRESCALER_2                       10
+#define   PRESCALER_4                       11
+#define   PRESCALER_8                       12
+#define   PRESCALER_16                      13
+#define   PRESCALER_32                      14
+#define   PRESCALER_64                      15
+#define   PRESCALER_128                     16
 
 #define   AREF_VOLTAGE                      20
 #define   AVCC_VOLTAGE                      21

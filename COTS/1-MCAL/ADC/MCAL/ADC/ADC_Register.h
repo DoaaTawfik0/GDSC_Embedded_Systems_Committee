@@ -34,7 +34,7 @@
 
 #define      ADCSRA             *((volatile u8*)0x26)
 
-//Bits 0:2  ADC Pre_scaler Select Bits
+//Bits 0:2  ADC Pre_scaler Select bits
 #define      ADCSRA_PS0         0
 #define      ADCSRA_PS1         1
 #define      ADCSRA_PS2         2

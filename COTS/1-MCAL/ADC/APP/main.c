@@ -27,8 +27,9 @@ int main()
 
 	PORT_voidInit();
 
-	ADC_enuInitialize();
 	ADC_enuEnable();
+	ADC_enuInitialize();
+
 	ADC_enuSelectChannel(2);
     ADC_enuDisableTriggeringMode();//work in single Mode
 	ADC_enuDisableInterruptMode();
