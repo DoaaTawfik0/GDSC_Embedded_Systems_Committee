@@ -19,7 +19,9 @@ ES_t  TIMER0_enuSynchDelay_ms(u32 Copy_u32DelayTime);//Polling  End of Jop
 
 ES_t  TIMER0_enuASynchDelay_ms(u32 Copy_u32DelayTime ,volatile void(*Copy_pfunAppFun)(void*) , void* Copy_pvidAppParameter);//Interrupt ISR
 
+ES_t  TIMER0_enuSetCTC(u8 Copy_u8OCR0Value);
 
+ES_t TIMER0_enuGeneratePWM(u8  Copy_u8DutyCycle);
 
 
 
