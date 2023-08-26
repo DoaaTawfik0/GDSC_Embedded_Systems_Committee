@@ -24,8 +24,9 @@ int main()
 {
 	PORT_voidInit();
 	TIMER0_enuInitialize();
-	TIMER0_enuASynchDelay_ms(3000 , Toggle , NULL);
-	GIE_enuEnable();
+	TIMER0_enuGeneratePWM(250);
+	//TIMER0_enuASynchDelay_ms(9000 , Toggle , NULL);
+	//GIE_enuEnable();
 
 	while(1)
 	{
