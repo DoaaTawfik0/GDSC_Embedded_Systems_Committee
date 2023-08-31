@@ -48,7 +48,7 @@
 
 //Directions for PortD Pins
 #define PORTD_PIN0_DIR        0
-#define PORTD_PIN1_DIR        0
+#define PORTD_PIN1_DIR        1
 #define PORTD_PIN2_DIR        0
 #define PORTD_PIN3_DIR        0
 #define PORTD_PIN4_DIR        0
